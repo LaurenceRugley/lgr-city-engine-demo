@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LGR Web Studio — City Engine Demo</title>
+<meta property="og:title" content="LGR Web Studio — City Engine Demo" />
+<meta property="og:description" content="A real-time city engine: living traffic, day/night, switchable art styles — all rendered live." />
+<style>
+  :root { --gold:#B89968; --limestone:#FAF7F2; }
+  html,body { margin:0; background:#171310; color:var(--limestone);
+    font:16px/1.65 -apple-system, "Inter", sans-serif; }
+  .wrap { max-width:920px; margin:0 auto; padding:42px 20px 90px; }
+  h1 { font:500 32px/1.2 "Cormorant Garamond", Georgia, serif; color:var(--gold); margin:0 0 6px; }
+  .sub { color:#9c8a6c; font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 26px; }
+  p.lead { font-size:17px; color:#e8dfd0; max-width:64ch; }
+  h2 { font:500 21px/1.3 "Cormorant Garamond", Georgia, serif; color:var(--gold);
+    border-bottom:1px solid #3a3026; padding-bottom:8px; margin:42px 0 18px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
+  figure { margin:0; background:#221c16; border:1px solid #3a3026; border-radius:10px; overflow:hidden; }
+  img, video { display:block; width:100%; height:auto; }
+  figcaption { padding:10px 14px; font-size:13.5px; color:#cdbfa4; }
+  .hero { grid-column:1 / -1; }
+  ul { color:#d8cdb8; max-width:68ch; padding-left:22px; }
+  li { margin:6px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>A living city engine</h1>
+  <p class="sub">LGR Web Studio · demo</p>
+  <p class="lead">A look at what we've been building: a real-time city engine —
+  isometric city views with living traffic, people, a full day/night cycle, and
+  switchable art styles. Nothing here is a drawn illustration; every frame is the
+  engine running live in a browser.</p>
+
+  <h2>One city, every style — in one continuous shot</h2>
+  <div class="grid">
+    <figure class="hero">
+      <video src="city-styles-showcase.mp4" controls loop autoplay muted playsinline></video>
+      <figcaption>The full tour: the city living through day and night — traffic, people,
+      windows waking at dusk — then zooming out into pixel art (cycling Game&nbsp;Boy,
+      8-bit, 16-bit and modern looks), gliding back in to the smooth cartoon close-up,
+      and out again. The art style follows the camera.</figcaption>
+    </figure>
+  </div>
+
+  <h2>The day/night cycle</h2>
+  <div class="grid">
+    <figure class="hero">
+      <video src="city-day-cycle.mp4" controls loop muted playsinline></video>
+      <figcaption>One slider scrubs the whole day — the sun moves, windows light up,
+      traffic keeps looping. All real-time.</figcaption>
+    </figure>
+    <figure><img src="city-day.png" alt="Isometric city at noon with traffic" />
+      <figcaption>Daytime — taxis, cars and a bus circulating the district</figcaption></figure>
+    <figure><img src="city-dusk-rush.png" alt="The city at dusk rush hour" />
+      <figcaption>Evening rush — headlights come on, windows start to glow</figcaption></figure>
+    <figure><img src="city-night.png" alt="The city at midnight, windows lit" />
+      <figcaption>Midnight — staggered lit windows, one taxi still working</figcaption></figure>
+  </div>
+
+  <h2>Style stills</h2>
+  <div class="grid">
+    <figure><img src="style-pixel-art.png" alt="The same city as 8-bit pixel art" />
+      <figcaption>The exact same scene as clean 8-bit pixel art</figcaption></figure>
+    <figure><img src="style-cartoon.png" alt="The same city cel-shaded with outlines" />
+      <figcaption>…or cel-shaded cartoon with ink outlines</figcaption></figure>
+  </div>
+
+  <h2>What this could do for a game</h2>
+  <ul>
+    <li><strong>A signature look, consistently.</strong> The art direction is rules in the
+      engine — palette, shading, line treatment — so every building, vehicle and screen
+      matches. No more one-off art that doesn't fit together.</li>
+    <li><strong>A city that feels alive.</strong> Day/night, rush hours, lit windows,
+      ambient traffic — atmosphere a static map can't give, basically free at runtime.</li>
+    <li><strong>Concept art in, game assets out.</strong> We also built a tool that takes
+      any image and converts it into palette-consistent pixel art at a chosen bit-era,
+      exporting game-ready files.</li>
+    <li><strong>Any city, any style.</strong> Next up: real landmark buildings and a
+      generator for whole unique districts — New York, Paris, fictional cities — all in
+      the same style.</li>
+  </ul>
+
+  <h2>What's coming next</h2>
+  <ul>
+    <li>Landmark buildings (real modeled assets flowing through the same styles)</li>
+    <li>Multiple cities — real and fictional — from one pipeline</li>
+    <li>Weather and seasons on top of the day/night system</li>
+    <li>One-key capture of any scene as video/stills for marketing</li>
+  </ul>
+
+  <p class="lead">Everything above runs in a browser at 120 fps. If any of this looks
+  useful for your project, let's talk — it's built to be adapted.</p>
+  <p class="sub">Laurence A. Rugley · LGR Web Studio</p>
+</div>
+</body>
+</html>
