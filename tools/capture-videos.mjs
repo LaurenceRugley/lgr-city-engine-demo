@@ -16,6 +16,7 @@ if (!baseUrl || !rawOut) { console.error('usage: node capture-videos.mjs <baseUr
 const JOBS = [
   { seq: 'tour',   params: 'cam=dimetric', out: 'city-showcase.mp4' }, // the full range pitch
   { seq: 'cities', params: 'cam=dimetric', out: 'three-cities.mp4' },  // multi-city showreel
+  { seq: 'office', params: 'cam=dimetric', out: 'office-tour.mp4' },   // the office-dive life (L23 beat)
 ];
 
 // headed Chrome = reliable WebGL + MediaRecorder (headless can drop the GPU path).
