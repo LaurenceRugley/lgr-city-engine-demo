@@ -8,8 +8,10 @@
 <meta property="og:description" content="A real-time city engine: play with it live, plus videos and feature stills. Living traffic, day/night, switchable art styles." />
 <style>
   :root { --accent:#7fb4d8; --paper:#f2f4f6; }
+  *, *::before, *::after { box-sizing:border-box; }
   html,body { margin:0; background:#10141c; color:var(--paper);
-    font:16px/1.65 -apple-system, "Inter", sans-serif; }
+    font:16px/1.65 -apple-system, "Inter", sans-serif;
+    overflow-x:hidden; -webkit-text-size-adjust:100%; }
   .wrap { max-width:940px; margin:0 auto; padding:42px 20px 96px; }
   h1 { font:500 30px/1.2 -apple-system, "Inter", sans-serif; color:#fff; margin:0 0 6px; }
   .sub { color:#7e8ca0; font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 24px; }
@@ -35,6 +37,27 @@
   .keys kbd { color:#fff; }
   .openbtn { display:inline-block; background:var(--accent); color:#0c1620; font-weight:500;
     text-decoration:none; padding:9px 16px; border-radius:8px; font-size:14px; margin-top:12px; }
+  .touch-hint { display:none; }
+  .keys .kbd-hint { color:#aeb9c6; }
+
+  /* ---- mobile-first: most visitors are on phones ---- */
+  @media (max-width:640px) {
+    .wrap { padding:22px 14px 76px; }
+    h1 { font-size:25px; }
+    .sub { font-size:12px; margin:0 0 18px; }
+    p.lead { font-size:16px; }
+    h2 { font-size:18px; margin:40px 0 8px; }
+    .note { font-size:14px; }
+    /* the live engine is the star — give it a big, thumb-reachable canvas */
+    .stage { aspect-ratio:auto; height:70vh; min-height:380px; border-radius:10px; }
+    /* keyboard shortcuts are meaningless on a touch screen — show tap hints instead */
+    .keys .kbd-hint { display:none; }
+    .keys .touch-hint { display:inline-block; font-size:13.5px; color:#cdd6e2;
+      background:#171d28; border:1px solid #28303e; border-radius:8px; padding:10px 12px; }
+    /* full-width, finger-sized primary action */
+    .openbtn { display:block; text-align:center; padding:14px 16px; font-size:16px; margin-top:14px; }
+    .grid { gap:14px; }
+  }
 </style>
 </head>
 <body>
@@ -51,14 +74,13 @@
   change the city, art style, time of day and camera; drag the water to ripple it.</p>
   <div class="stage">
     <iframe src="live/?demo=1&amp;cam=dimetric&amp;style=vector" title="Live city engine"
-      tabindex="0" allow="autoplay" loading="lazy"></iframe>
+      tabindex="0" allow="autoplay"></iframe>
   </div>
   <div class="keys">
-    <span>tap the buttons in the window</span>
-    <span>or, on a computer: <kbd>C</kbd> city · <kbd>G</kbd> shuffle · <kbd>T</kbd> time</span>
-    <span><kbd>0</kbd>/<kbd>7</kbd>/<kbd>8</kbd> style</span>
-    <span><kbd>4</kbd>/<kbd>5</kbd>/<kbd>6</kbd> camera</span>
-    <span>drag the water to ripple it</span>
+    <span class="touch-hint">👆 Tap the buttons to change city, art style &amp; time of day</span>
+    <span class="touch-hint">Drag the water to ripple it</span>
+    <span class="kbd-hint">on a computer: <kbd>C</kbd> city · <kbd>G</kbd> shuffle · <kbd>T</kbd> time
+      · <kbd>0</kbd>/<kbd>7</kbd>/<kbd>8</kbd> style · <kbd>4</kbd>/<kbd>5</kbd>/<kbd>6</kbd> camera</span>
   </div>
   <a class="openbtn" href="live/?demo=1&amp;cam=dimetric&amp;style=vector" target="_blank" rel="noopener">Open full screen ↗</a>
 
