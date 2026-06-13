@@ -4,104 +4,130 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>City Engine — Demo</title>
-<meta property="og:title" content="City Engine — Demo" />
-<meta property="og:description" content="A real-time city engine: living traffic, day/night, switchable art styles — all rendered live." />
+<meta property="og:title" content="City Engine — interactive demo" />
+<meta property="og:description" content="A real-time city engine: play with it live, plus videos and feature stills. Living traffic, day/night, switchable art styles." />
 <style>
   :root { --accent:#7fb4d8; --paper:#f2f4f6; }
   html,body { margin:0; background:#10141c; color:var(--paper);
     font:16px/1.65 -apple-system, "Inter", sans-serif; }
-  .wrap { max-width:920px; margin:0 auto; padding:42px 20px 90px; }
+  .wrap { max-width:940px; margin:0 auto; padding:42px 20px 96px; }
   h1 { font:500 30px/1.2 -apple-system, "Inter", sans-serif; color:#fff; margin:0 0 6px; }
-  .sub { color:#7e8ca0; font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 26px; }
-  p.lead { font-size:17px; color:#d8dee8; max-width:64ch; }
+  .sub { color:#7e8ca0; font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 24px; }
+  p.lead { font-size:17px; color:#d8dee8; max-width:66ch; }
   h2 { font:500 20px/1.3 -apple-system, "Inter", sans-serif; color:var(--accent);
-    border-bottom:1px solid #28303e; padding-bottom:8px; margin:42px 0 18px; }
+    border-bottom:1px solid #28303e; padding-bottom:8px; margin:46px 0 8px; }
+  .note { color:#8c98a8; font-size:14px; max-width:66ch; margin:6px 0 18px; }
   .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
   figure { margin:0; background:#171d28; border:1px solid #28303e; border-radius:10px; overflow:hidden; }
   img, video { display:block; width:100%; height:auto; }
-  figcaption { padding:10px 14px; font-size:13.5px; color:#aab6c6; }
+  figcaption { padding:11px 14px; font-size:14px; color:#aab6c6; }
+  figcaption b { color:#e8eef6; font-weight:500; }
   .hero { grid-column:1 / -1; }
   ul { color:#c6cfdc; max-width:68ch; padding-left:22px; }
   li { margin:6px 0; }
+  /* live embed */
+  .stage { position:relative; border:1px solid #28303e; border-radius:12px; overflow:hidden;
+    background:#0c1018; aspect-ratio:16/10; }
+  .stage iframe { width:100%; height:100%; border:0; display:block; }
+  .keys { display:flex; flex-wrap:wrap; gap:6px 8px; margin:12px 0 0; }
+  .keys span { font:12px/1 ui-monospace, monospace; color:#aeb9c6; background:#171d28;
+    border:1px solid #28303e; border-radius:6px; padding:6px 9px; }
+  .keys kbd { color:#fff; }
+  .openbtn { display:inline-block; background:var(--accent); color:#0c1620; font-weight:500;
+    text-decoration:none; padding:9px 16px; border-radius:8px; font-size:14px; margin-top:12px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>A living city engine</h1>
-  <p class="sub">demo · everything below is rendered live</p>
-  <p class="lead">A look at what we've been building: a real-time city engine —
-  isometric city views with living traffic, people, interactive water, a full
-  day/night cycle, and switchable art styles. Nothing here is a drawn illustration;
-  every frame is the engine running in a browser.</p>
+  <p class="sub">interactive demo · everything here is rendered live</p>
+  <p class="lead">A real-time city engine: generated cities with living traffic, people,
+  interactive water, a full day/night cycle, and art styles you switch on the fly.
+  Play with it right here, then scroll down for videos and feature stills. Nothing
+  below is a drawn illustration — every frame is the engine running.</p>
 
-  <p style="margin:18px 0 0;">
-    <a href="live/?demo=1" style="display:inline-block; background:#7fb4d8; color:#0c1620;
-      font-weight:500; text-decoration:none; padding:11px 20px; border-radius:8px;
-      font-size:15px;">▶ Try it live (desktop)</a>
-    <span style="display:block; font-size:13px; color:#7e8ca0; margin-top:8px;">
-      Opens the actual engine in your browser. On a computer, use the keyboard:
-      <code>C</code> change city · <code>G</code> new layout · <code>T</code> time of day ·
-      <code>1/2/3</code> &amp; <code>7/8</code> art style · <code>4/5/6</code> camera ·
-      drag the water to ripple it. (Live engine is best on desktop.)
-    </span>
-  </p>
+  <h2>Play with it</h2>
+  <p class="note">It's running live below. On a computer, click the window first, then
+  use the keys. (Best on desktop for now — tap controls for phones are on the way.)</p>
+  <div class="stage">
+    <iframe src="live/?demo=1" title="Live city engine" tabindex="0"
+      allow="autoplay" loading="lazy"></iframe>
+  </div>
+  <div class="keys">
+    <span><kbd>C</kbd> change city</span>
+    <span><kbd>G</kbd> new layout</span>
+    <span><kbd>T</kbd> time of day</span>
+    <span><kbd>0</kbd> vector look</span>
+    <span><kbd>7</kbd>/<kbd>8</kbd> pixel / cartoon</span>
+    <span><kbd>B</kbd> pixel era</span>
+    <span><kbd>4</kbd>/<kbd>5</kbd>/<kbd>6</kbd> camera</span>
+    <span>drag the water to ripple it</span>
+  </div>
+  <a class="openbtn" href="live/?demo=1" target="_blank" rel="noopener">Open full screen ↗</a>
 
   <h2>The tour — one continuous take</h2>
+  <p class="note">If you only watch one thing: the city living through day into night, then
+  zooming out into pixel art (cycling Game&nbsp;Boy → 8-bit → 16-bit → modern), gliding back
+  in to a smooth cartoon close-up. The art style follows the camera.</p>
   <div class="grid">
     <figure class="hero">
       <video src="city-showcase.mp4" controls loop autoplay muted playsinline></video>
-      <figcaption>In order: the city at noon — a touch on the water sends real ripples
-      through it — then the camera orbits the district, the day sweeps into night
-      (windows wake, headlights pool) and back. Then the zoom: pulling out turns the
-      city into pixel art — cycling Game&nbsp;Boy, 8-bit, 16-bit and modern looks —
-      gliding back in becomes the smooth cartoon close-up, and out again to an 8-bit
-      finish. The art style follows the camera; the city never stops living.</figcaption>
+      <figcaption>One continuous shot — water ripples, a slow orbit, the sun crossing the
+      sky, and the full range of art styles.</figcaption>
     </figure>
   </div>
 
-  <h2>Three cities, one engine</h2>
+  <h2>Every city from one number</h2>
+  <p class="note">Each city is generated from a single seed — same rules, different
+  character. Recognizable landmarks included. New cities, real or invented, are one
+  setting away.</p>
   <div class="grid">
     <figure class="hero">
       <video src="three-cities.mp4" controls loop muted playsinline></video>
-      <figcaption>Every city here is generated from a single seed number — same rules,
-      different character. A Manhattan with the Empire State and Chrysler rising from its
-      core; a Paris of uniform rooftops under an iron tower; a neon city that never sleeps,
-      its orange tower glowing at dusk. New cities — real or fictional — are a profile away.</figcaption>
+      <figcaption>Manhattan, Paris and Neo-Tokyo at dusk — generated, not hand-placed.</figcaption>
     </figure>
+    <figure><img src="feature-manhattan.png" alt="Generated Manhattan with Empire State, Chrysler, Statue of Liberty" />
+      <figcaption><b>Manhattan</b> — the Empire State and Chrysler rise from a dense core;
+      Lady Liberty sits at the water's edge.</figcaption></figure>
+    <figure><img src="feature-paris.png" alt="Generated Paris with Eiffel Tower and uniform rooftops" />
+      <figcaption><b>Paris</b> — uniform Haussmann rooftops under an iron tower; a different
+      city from the very same generator.</figcaption></figure>
+    <figure><img src="feature-neotokyo-night.png" alt="Generated Neo-Tokyo at night with glowing tower and neon windows" />
+      <figcaption><b>Neo-Tokyo</b> — at night the tower glows orange and the windows go
+      neon. A city that never sleeps.</figcaption></figure>
   </div>
 
-  <h2>Hours of the day</h2>
+  <h2>Any art style, instantly</h2>
+  <p class="note">The same scene, re-skinned in real time. The art direction is rules in
+  the engine — palette, shading, line work — so everything stays consistent. Concept art
+  in, game-ready style out.</p>
   <div class="grid">
-    <figure><img src="city-day.png" alt="Isometric city at noon with traffic" />
-      <figcaption>Noon — taxis, cars and a bus circulating the ring road</figcaption></figure>
-    <figure><img src="city-evening.png" alt="The city at evening, windows lighting up" />
-      <figcaption>Evening — windows waking up, block by block</figcaption></figure>
-    <figure><img src="city-night.png" alt="The city at night, windows lit" />
-      <figcaption>Night — staggered lit windows; the city sleeps but never fully</figcaption></figure>
+    <figure><img src="feature-pixel-8bit.png" alt="The city as 8-bit pixel art" />
+      <figcaption><b>8-bit pixel art</b> — a curated retro palette, crisp dithering.</figcaption></figure>
+    <figure><img src="feature-pixel-gameboy.png" alt="The city as Game Boy style pixel art" />
+      <figcaption><b>Game Boy</b> — four shades, maximum nostalgia. Pick your bit-era.</figcaption></figure>
+    <figure><img src="feature-toon.png" alt="The city cel-shaded with ink outlines" />
+      <figcaption><b>Cartoon</b> — flat cel shading with clean ink outlines.</figcaption></figure>
   </div>
 
   <h2>What this could do for a game</h2>
   <ul>
-    <li><strong>A signature look, consistently.</strong> The art direction is rules in the
-      engine — palette, shading, line treatment — so every building, vehicle and screen
-      matches. No more one-off art that doesn't fit together.</li>
+    <li><strong>A signature look, consistently.</strong> Palette, shading and line work
+      are engine rules — every building, vehicle and screen matches.</li>
     <li><strong>A city that feels alive.</strong> Day/night, rush hours, lit windows,
-      ambient traffic, water that reacts to touch — atmosphere a static map can't give,
-      essentially free at runtime.</li>
-    <li><strong>Concept art in, game assets out.</strong> There's also a tool that takes
-      any image and converts it into palette-consistent pixel art at a chosen bit-era,
-      exporting game-ready files.</li>
-    <li><strong>Any city, any style.</strong> The generator above already builds whole
-      unique districts — recognizable landmarks included — from one seed number. Every
-      city is a shareable address.</li>
+      ambient traffic, water that reacts to touch — atmosphere a static map can't give.</li>
+    <li><strong>Concept art in, game assets out.</strong> A tool turns any image into
+      palette-consistent pixel art at a chosen bit-era, exporting game-ready files.</li>
+    <li><strong>Any city, any style.</strong> Generated districts with real landmarks,
+      from one seed — every city a shareable address.</li>
   </ul>
 
   <h2>What's coming next</h2>
   <ul>
     <li>Dynamic sun shadows sweeping with the day/night cycle</li>
-    <li>Weather and seasons — rain on that water, snow on those rooftops</li>
-    <li>Traffic that drives the generated streets</li>
-    <li>Coastlines and harbors (and a statue who gets her own island)</li>
+    <li>On-screen tap controls (so this plays great on a phone too)</li>
+    <li>Weather and seasons — rain on the water, snow on the rooftops</li>
+    <li>Traffic that drives the generated streets; coastlines and harbors</li>
   </ul>
 
   <p class="lead">Everything above runs in a browser at 120 fps. If any of this looks
