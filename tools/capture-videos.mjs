@@ -19,6 +19,7 @@ const JOBS = [
   { seq: 'office', params: 'cam=dimetric', out: 'office-tour.mp4' },   // the office-dive life (L23 beat)
   { seq: 'water',  params: 'cam=dimetric', out: 'water-tour.mp4' },    // boats carve wakes (L26 beat)
   { seq: 'morph',  params: 'cam=dimetric', out: 'pixel-morph.mp4' },   // zoom→pixel-art ladder (L27 beat)
+  { seq: 'skin',   params: 'cam=dimetric', out: 'office-skin.mp4' },   // diffusion office skin (L29/L30 beat)
 ];
 
 // headed Chrome = reliable WebGL + MediaRecorder (headless can drop the GPU path).

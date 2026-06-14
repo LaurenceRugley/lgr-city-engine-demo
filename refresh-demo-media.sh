@@ -30,7 +30,7 @@ echo "▶ recording sequences (a Chrome window will open briefly)…"
 node "$DEMO/tools/capture-videos.mjs" "http://localhost:$PORT" "$RAW"
 
 echo "▶ transcoding to web-optimized H.264…"
-for f in city-showcase three-cities office-tour water-tour pixel-morph; do
+for f in city-showcase three-cities office-tour water-tour pixel-morph office-skin; do
   ffmpeg -y -loglevel error -i "$RAW/$f.mp4" \
     -c:v libx264 -crf 25 -preset slow -pix_fmt yuv420p -movflags +faststart -an \
     "$DEMO/$f.mp4"
