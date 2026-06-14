@@ -17,6 +17,8 @@ const JOBS = [
   { seq: 'tour',   params: 'cam=dimetric', out: 'city-showcase.mp4' }, // the full range pitch
   { seq: 'cities', params: 'cam=dimetric', out: 'three-cities.mp4' },  // multi-city showreel
   { seq: 'office', params: 'cam=dimetric', out: 'office-tour.mp4' },   // the office-dive life (L23 beat)
+  { seq: 'water',  params: 'cam=dimetric', out: 'water-tour.mp4' },    // boats carve wakes (L26 beat)
+  { seq: 'morph',  params: 'cam=dimetric', out: 'pixel-morph.mp4' },   // zoom→pixel-art ladder (L27 beat)
 ];
 
 // headed Chrome = reliable WebGL + MediaRecorder (headless can drop the GPU path).
