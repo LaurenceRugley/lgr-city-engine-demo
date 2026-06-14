@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./main-CdyKX8HS.js","./three-C3htDmZ3.js","./pixelkit-DVL39Kaj.js"])))=>i.map(i=>d[i]);
+import"./modulepreload-polyfill-Dezn_h7o.js";import{t as e}from"./preload-helper-kNaey6uv.js";var t=new URL(window.location.href);!t.searchParams.has(`office`)&&!t.searchParams.has(`hoard`)&&(t.searchParams.set(`hoard`,`1`),history.replaceState(null,``,t)),e(()=>import(`./main-CdyKX8HS.js`).then(e=>e.t),__vite__mapDeps([0,1,2]),import.meta.url);
