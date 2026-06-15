@@ -35,10 +35,10 @@
     .note { opacity:.55; font-size:11px; margin-top:10px; }
     #file { display:none; }
   </style>
-  <script type="module" crossorigin src="../assets/pixelate-DS_WFeS9.js"></script>
+  <script type="module" crossorigin src="../assets/pixelate-BltUqCu4.js"></script>
   <link rel="modulepreload" crossorigin href="../assets/rolldown-runtime-DK3Fl9T5.js">
   <link rel="modulepreload" crossorigin href="../assets/three-CmV-rJ7Z.js">
-  <link rel="modulepreload" crossorigin href="../assets/engine-core-DiojiY1W.js">
+  <link rel="modulepreload" crossorigin href="../assets/engine-core-lnyp4WSC.js">
 </head>
 <body>
   <div id="stage"></div>
@@ -57,13 +57,10 @@
     <div class="row"><label>Grid</label><input id="grid" type="range" min="32" max="512" value="160"></div>
     <div class="row"><label>Dither</label><input id="dither" type="range" min="0" max="100" value="55"></div>
     <div class="row"><label>Palette</label>
+      <!-- 'era' + 'extract' are static; the named LGR_PALETTES are appended by pixelate.js (L47). -->
       <select id="palette">
         <option value="era" selected>era default</option>
         <option value="extract">extract from image</option>
-        <option value="ink-gold (day)">ink-gold (day)</option>
-        <option value="ink-gold (night)">ink-gold (night)</option>
-        <option value="terminal (day)">terminal (day)</option>
-        <option value="terminal (night)">terminal (night)</option>
       </select>
     </div>
     <div id="swatches"></div>
