@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- L41: inline SVG favicon (zero extra request; also kills the intermittent /live/ favicon 404). -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230e0b07'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='18' font-weight='700' fill='%23b89968' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E" />
   <title>LGR WebGL Lab — 17 · Viewer Controls</title>
   <style>
     html, body { margin: 0; height: 100%; background: #0e0b07; overflow: hidden; }
@@ -13,13 +15,28 @@
       color: rgba(184, 153, 104, 0.75); text-transform: uppercase;
       pointer-events: none;
     }
+    /* L41 BRANDED LOADER — painted from the page shell IMMEDIATELY (before the ~500 kB JS bundle even
+       loads), so slow/mobile visitors see an on-brand mark instead of a blank dark canvas. createEngine
+       adds .gone on the first rendered frame. prefers-reduced-motion → no spin (static mark). */
+    #lgr-loader { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 18px; background: #0e0b07;
+      color: rgba(184,153,104,0.85); font: 600 12px/1 ui-monospace, monospace; letter-spacing: 0.22em;
+      transition: opacity .5s ease; }
+    #lgr-loader.gone { opacity: 0; pointer-events: none; }
+    #lgr-loader .mark { font: 700 36px/1 Georgia, serif; letter-spacing: 0.08em; color: #b89968; }
+    #lgr-loader .spin { width: 26px; height: 26px; border: 2px solid rgba(184,153,104,0.22);
+      border-top-color: #b89968; border-radius: 50%; animation: lgrspin .9s linear infinite; }
+    @keyframes lgrspin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { #lgr-loader .spin { animation: none; border-top-color: rgba(184,153,104,0.22); } }
   </style>
-  <script type="module" crossorigin src="./assets/main-Boyd24nd.js"></script>
+  <script type="module" crossorigin src="./assets/main-Dq90mbT4.js"></script>
   <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-DK3Fl9T5.js">
   <link rel="modulepreload" crossorigin href="./assets/three-CAqSPQgM.js">
-  <link rel="modulepreload" crossorigin href="./assets/engine-core-DaHTF7dp.js">
+  <link rel="modulepreload" crossorigin href="./assets/engine-core-DViF9sIF.js">
 </head>
 <body>
+  <!-- L41: branded loading screen, shown before the JS bundle resolves; createEngine fades it on frame 1. -->
+  <div id="lgr-loader"><div class="mark">LGR</div><div class="spin"></div><div>LOADING…</div></div>
   <!-- This is the ONLY hand-written HTML. Everything visual is built in JS/WebGL.
        The `type="module"` script is the entry point Vite compiles + bundles. -->
   <div class="hint">LGR WebGL Lab · 24 — streets &amp; traffic · click a building to dive in · inside: click the laptop · phone · or the cat · Esc exits · W weather · M hides this UI · T time · G reroll · C city · 0 VECTOR · 7/8 style</div>

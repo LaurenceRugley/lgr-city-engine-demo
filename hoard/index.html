@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- L41: inline SVG favicon (zero extra request). -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230e0b07'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='18' font-weight='700' fill='%23b89968' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E" />
   <title>LGR — The Hoard</title>
   <style>
     html, body { margin: 0; height: 100%; background: #0e0b07; overflow: hidden; }
@@ -13,12 +15,24 @@
       color: rgba(184, 153, 104, 0.75); text-transform: uppercase;
       pointer-events: none;
     }
+    /* L41 BRANDED LOADER — painted from the shell before the JS bundle loads; createEngine fades it on frame 1. */
+    #lgr-loader { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 18px; background: #0e0b07;
+      color: rgba(184,153,104,0.85); font: 600 12px/1 ui-monospace, monospace; letter-spacing: 0.22em;
+      transition: opacity .5s ease; }
+    #lgr-loader.gone { opacity: 0; pointer-events: none; }
+    #lgr-loader .mark { font: 700 36px/1 Georgia, serif; letter-spacing: 0.08em; color: #b89968; }
+    #lgr-loader .spin { width: 26px; height: 26px; border: 2px solid rgba(184,153,104,0.22);
+      border-top-color: #b89968; border-radius: 50%; animation: lgrspin .9s linear infinite; }
+    @keyframes lgrspin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { #lgr-loader .spin { animation: none; border-top-color: rgba(184,153,104,0.22); } }
   </style>
-  <script type="module" crossorigin src="./assets/index-BIeryqba.js"></script>
+  <script type="module" crossorigin src="./assets/index-Dm9xl4pH.js"></script>
   <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-DK3Fl9T5.js">
   <link rel="modulepreload" crossorigin href="./assets/three-B1EZZ7Lj.js">
 </head>
 <body>
+  <div id="lgr-loader"><div class="mark">LGR</div><div class="spin"></div><div>LOADING…</div></div>
   <!-- Standalone HOARD page (deploys to /hoard/) — its own lean app on @lgr/engine-core. -->
   <div class="hint">THE HOARD · WASD / drag to move · click / hold to fire · survive the waves · B bag · Esc exits</div>
 </body>
