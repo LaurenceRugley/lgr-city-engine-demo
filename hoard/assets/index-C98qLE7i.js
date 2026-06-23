@@ -74,6 +74,15 @@ varying vec2 vWorldXZ;`).replace(`#include <begin_vertex>`,`#include <begin_vert
           float s = fract(r * 13.0);                    // pick among the (≤3) lit-pane colours
           wcol = s < 0.34 ? uWinA : (s < 0.67 ? uWinB : uWinC);
           return vec2(sideMask * pane, lit);
+        }`).replace(`#include <color_fragment>`,`#include <color_fragment>
+        {
+          // winTerms() returns (paneMask, litTonight); we want the day pane mask here. It already
+          // restricts itself to vertical faces (roofs/underside excluded), so roof caps stay clean.
+          vec3 wcolL; vec2 wL = winTerms(wcolL);
+          float bvar = 0.80 + 0.20 * fract(uWinId * 0.131);          // per-building tonal break (0.80..1.0)
+          diffuseColor.rgb *= bvar;                                   // …pulls light creams off pure white
+          vec3 dayGlass = diffuseColor.rgb * 0.40 + vec3(0.045, 0.065, 0.10);  // darker, cooler glass panes
+          diffuseColor.rgb = mix(diffuseColor.rgb, dayGlass, wL.x * 0.85);      // mullions keep the wall colour
         }`).replace(`#include <emissivemap_fragment>`,`#include <emissivemap_fragment>
         {
           vec3 wcol; vec2 w = winTerms(wcol);
