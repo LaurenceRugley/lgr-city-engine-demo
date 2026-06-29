@@ -1056,11 +1056,13 @@ void main() {
   .lgr-hints-h { font: 700 15px/1 Georgia, serif; color: #b89968; letter-spacing: .06em; margin: 0 0 10px; }
   .lgr-hints-card ul { margin: 0 0 14px; padding-left: 18px; }
   .lgr-hints-card li { margin: 4px 0; }
+  /* L104: gold-not-blue — the "Got it" button matches the one gold accent (was blue #3a7bd5; white-on-blue
+     failed 4.5:1). Gold fill + dark ink ≈ 6.95:1, pairing with the card's existing #b89968 title/border. */
   .lgr-hints-ok { min-width: 44px; min-height: 40px; padding: 0 18px; border: 0; border-radius: 9px;
-    background: #3a7bd5; color: #fff; font: 600 13px/1 ui-monospace, monospace; cursor: pointer;
+    background: #b89968; color: #1b1d24; font: 600 13px/1 ui-monospace, monospace; cursor: pointer;
     letter-spacing: .04em; transition: transform .08s ease, background .12s; }
-  .lgr-hints-ok:hover { background: #4a8be5; }
-  .lgr-hints-ok:active { transform: scale(0.94); background: #5a9bf5; }
+  .lgr-hints-ok:hover { background: #cdab74; }
+  .lgr-hints-ok:active { transform: scale(0.94); background: #e8c069; }
   .lgr-hints-x { position: absolute; top: 7px; right: 7px; min-width: 36px; min-height: 36px; border: 0;
     background: transparent; color: #8a93a3; font: 15px/1 ui-monospace, monospace; cursor: pointer;
     border-radius: 8px; transition: transform .08s ease; }
