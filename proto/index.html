@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<meta name="theme-color" content="#10141d" />
+<title>LGR — Adaptive HUD prototype (v2: seize the flight)</title>
+<style>
+  :root{ --gold:#e8b765; --gold-ink:#3a2c0c; --ink:#f0ece4; --dim:#cfc8ba; --panel:#0d1119cc; --line:#ffffff22; }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; height:100%; overflow:hidden; background:#10141d; color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif; user-select:none; -webkit-user-select:none; }
+  #scene{ position:fixed; inset:0; width:100%; height:100%; display:block; }
+  #scene.toon{ filter:contrast(1.6) saturate(1.85) brightness(1.04); }
+  #scene.pixel{ image-rendering:pixelated; filter:contrast(1.35) saturate(1.4); }
+  .hud{ position:fixed; inset:0; pointer-events:none; }
+  .hud > *{ pointer-events:auto; }
+
+  /* top status */
+  .status{ position:absolute; top:calc(12px + env(safe-area-inset-top)); left:14px; display:flex; align-items:center; gap:8px;
+    font-size:13px; background:var(--panel); border:.5px solid var(--line); border-radius:9px; padding:6px 11px; backdrop-filter:blur(6px); }
+  .status .dot{ width:7px; height:7px; border-radius:50%; background:var(--gold); }
+  .brand{ position:absolute; top:calc(12px + env(safe-area-inset-top)); right:14px; font-weight:600; letter-spacing:.5px;
+    font-size:15px; color:var(--gold); opacity:.9; }
+
+  /* take-over coach */
+  .coach{ position:absolute; left:50%; bottom:108px; transform:translateX(-50%); display:flex; align-items:center; gap:7px;
+    background:var(--panel); border:.5px solid var(--gold); border-radius:22px; padding:8px 16px; font-size:13px;
+    backdrop-filter:blur(6px); white-space:nowrap; transition:opacity .35s ease; }
+  .coach .pulse{ width:8px; height:8px; border-radius:50%; background:var(--gold); animation:pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ transform:scale(1); opacity:1 } 50%{ transform:scale(1.7); opacity:.4 } }
+
+  /* verb bar */
+  .verbs{ position:absolute; left:12px; right:12px; bottom:calc(12px + env(safe-area-inset-bottom)); display:flex; gap:8px; }
+  .verb{ flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 0; border-radius:13px;
+    background:#0d11198c; border:.5px solid var(--line); color:var(--ink); font-size:12px; transition:transform .12s ease, background .2s; }
+  .verb svg{ width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+  .verb.primary{ flex:1.35; background:var(--gold); color:var(--gold-ink); box-shadow:0 0 0 3px #e8b76533; font-weight:600; }
+  .verb:active{ transform:scale(.96); }
+  .verb .lbl{ font-weight:inherit; }
+  .info{ width:46px; flex:none; }
+
+  /* flying controls */
+  .flying{ display:none; }
+  .flying.on{ display:block; }
+  .stick{ position:absolute; width:128px; height:128px; border-radius:50%; background:#0d111966; border:.5px solid var(--line);
+    transform:translate(-50%,-50%); display:none; }
+  .stick.on{ display:block; }
+  .knob{ position:absolute; left:50%; top:50%; width:58px; height:58px; border-radius:50%; background:#e8b765e6;
+    transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; color:var(--gold-ink); }
+  .knob svg{ width:24px; height:24px; stroke:currentColor; fill:none; stroke-width:1.8; }
+  .lift{ position:absolute; right:18px; bottom:calc(96px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; gap:10px; }
+  .lift button{ width:50px; height:50px; border-radius:12px; background:var(--panel); border:.5px solid var(--line); color:var(--ink);
+    display:flex; align-items:center; justify-content:center; backdrop-filter:blur(6px); }
+  .lift button:active{ background:#e8b76533; }
+  .lift svg{ width:20px; height:20px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; }
+  .exit{ position:absolute; top:calc(12px + env(safe-area-inset-top)); right:14px; width:38px; height:38px; border-radius:50%;
+    background:var(--panel); border:.5px solid var(--line); color:var(--ink); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(6px); }
+  .exit svg{ width:18px; height:18px; stroke:currentColor; stroke-width:2; }
+
+  /* dive reticle */
+  .reticle{ position:absolute; width:54px; height:54px; transform:translate(-50%,-50%) scale(1.25); opacity:0;
+    border:0; pointer-events:none; }
+  .reticle.on{ animation:reticle .45s ease forwards; }
+  @keyframes reticle{ 0%{ opacity:0; transform:translate(-50%,-50%) scale(1.4) } 40%{ opacity:1 } 100%{ opacity:0; transform:translate(-50%,-50%) scale(1.0) } }
+  .reticle b{ position:absolute; width:16px; height:16px; border:2px solid var(--gold); }
+  .reticle b:nth-child(1){ top:0; left:0; border-right:0; border-bottom:0; }
+  .reticle b:nth-child(2){ top:0; right:0; border-left:0; border-bottom:0; }
+  .reticle b:nth-child(3){ bottom:0; left:0; border-right:0; border-top:0; }
+  .reticle b:nth-child(4){ bottom:0; right:0; border-left:0; border-top:0; }
+
+  .hint{ position:absolute; left:50%; bottom:96px; transform:translateX(-50%); font-size:12px; color:var(--dim); opacity:.85; white-space:nowrap; }
+  @media (prefers-reduced-motion: reduce){ .coach .pulse{ animation:none } }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div class="hud" id="hud">
+  <div class="status"><span class="dot"></span><span id="statusTxt">Already in flight</span></div>
+  <div class="brand">LGR</div>
+
+  <div class="coach" id="coach"><span class="pulse"></span><span>Touch anywhere to take over</span></div>
+
+  <div class="flying" id="flying">
+    <button class="exit" id="exit" aria-label="Exit flight"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="stick" id="stick"><div class="knob"><svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg></div></div>
+    <div class="lift">
+      <button id="climb" aria-label="Climb"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+      <button id="dive" aria-label="Descend"><svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg></button>
+    </div>
+  </div>
+
+  <div class="hint" id="lookHint" style="display:none">Drag to look around · tap Fly to take the craft</div>
+  <div class="reticle" id="reticle"><b></b><b></b><b></b><b></b></div>
+
+  <div class="verbs" id="verbs">
+    <button class="verb" id="vLook"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><span class="lbl">Look</span></button>
+    <button class="verb primary" id="vFly"><svg viewBox="0 0 24 24"><path d="M5 13l-2 4 4-2 9-9a2 2 0 0 0-3-3z"/><path d="M12 6l6 6"/><path d="M9 21c0-2 1-4 3-4"/></svg><span class="lbl">Fly</span></button>
+    <button class="verb" id="vDive"><svg viewBox="0 0 24 24"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="lbl">Dive</span></button>
+    <button class="verb info" id="vInfo" aria-label="Controls info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cv = document.getElementById('scene'), ctx = cv.getContext('2d');
+  const coach = document.getElementById('coach'), flying = document.getElementById('flying');
+  const stick = document.getElementById('stick'), statusTxt = document.getElementById('statusTxt');
+  const lookHint = document.getElementById('lookHint'), reticle = document.getElementById('reticle');
+  let W=0, H=0, dpr=1, pixelMode=false;
+  function size(){ dpr = pixelMode ? 0.16 : Math.min(devicePixelRatio||1, 2);
+    W = innerWidth; H = innerHeight; cv.width = Math.max(2, W*dpr|0); cv.height = Math.max(2, H*dpr|0); }
+  addEventListener('resize', size); size();
+
+  // ---- world state ----
+  let mode = 'attract';                 // attract | look | fly | dive
+  const craft = { x:0.5, y:0.42, vx:0.04, vy:0 };   // normalized; vx auto-drift in attract
+  let camX = 0;                         // look-mode parallax
+  let t0 = performance.now(), speed = 0;
+  const stickState = { active:false, cx:0, cy:0, dx:0, dy:0 };
+  let lift = 0;
+
+  // ---- draw ----
+  function draw(now){
+    const t = (now - t0)/1000;
+    const w = cv.width, h = cv.height;
+    // sky
+    const g = ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,'#243056'); g.addColorStop(0.55,'#5b4a6e'); g.addColorStop(1,'#e8b765');
+    ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    // sun
+    const sx = w*0.78 - camX*0.0006*w, sy = h*0.30;
+    ctx.fillStyle = '#ffe2b0'; ctx.beginPath(); ctx.arc(sx, sy, h*0.06, 0, 7); ctx.fill();
+    ctx.fillStyle = 'rgba(255,210,140,0.18)'; ctx.beginPath(); ctx.arc(sx, sy, h*0.14, 0, 7); ctx.fill();
+    // sea shimmer
+    ctx.fillStyle = 'rgba(232,183,101,0.25)'; ctx.fillRect(0, h*0.72, w, h*0.28);
+    // city skyline (parallax with camX)
+    const base = h*0.80; const n = 9; const off = (camX*0.12) % (w/n);
+    for(let i=-1;i<n+1;i++){
+      const bx = i*(w/n) - off; const bw = w/n*0.92;
+      const bh = (Math.sin(i*1.7)*0.5+0.5)*h*0.26 + h*0.12;
+      ctx.fillStyle = i%3? '#161d2b' : '#1d2638'; ctx.fillRect(bx, base-bh, bw, bh+h*0.3);
+      // windows
+      ctx.fillStyle = 'rgba(232,183,101,0.55)';
+      for(let wy=base-bh+8*dpr; wy<base-6*dpr; wy+=14*dpr) for(let wx=bx+6*dpr; wx<bx+bw-6*dpr; wx+=12*dpr)
+        if((((i*7+wx+wy)|0)%5)===0) ctx.fillRect(wx, wy, 4*dpr, 6*dpr);
+    }
+    // craft
+    if(mode!=='attract'){ // physics
+      craft.x += stickState.dx*0.0009; craft.y += (stickState.dy*0.0009 + lift*0.004);
+      speed = Math.min(140, Math.hypot(stickState.dx, stickState.dy + lift*40)*0.9);
+    } else { craft.x += craft.vx*0.0016; if(craft.x>0.92||craft.x<0.08) craft.vx*=-1; craft.y = 0.42 + Math.sin(t*0.6)*0.03; speed=0; }
+    craft.x = Math.max(0.06, Math.min(0.94, craft.x)); craft.y = Math.max(0.18, Math.min(0.66, craft.y));
+    const cx = craft.x*w, cy = craft.y*h, cw = h*0.075;
+    ctx.fillStyle = 'rgba(232,183,101,0.16)'; ctx.beginPath(); ctx.ellipse(cx, cy+cw*0.5, cw*1.5, cw*0.5,0,0,7); ctx.fill();
+    ctx.fillStyle = '#33405a'; ctx.beginPath(); ctx.ellipse(cx, cy, cw, cw*0.4, 0,0,7); ctx.fill();
+    ctx.fillStyle = '#c9d4e6'; ctx.beginPath(); ctx.ellipse(cx, cy-cw*0.2, cw*0.5, cw*0.34, 0, Math.PI, 0); ctx.fill();
+    ctx.fillStyle = '#e8b765'; ctx.beginPath(); ctx.arc(cx-cw*0.5, cy, 2.5*dpr,0,7); ctx.arc(cx+cw*0.5, cy, 2.5*dpr,0,7); ctx.fill();
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+  if(mode==='attract'){} // speed readout updater
+  setInterval(()=>{ if(mode==='fly'){ statusTxt.textContent = 'Piloting · ' + Math.round(speed) + ' km/h'; } }, 120);
+
+  // ---- the seize + morph handoff ----
+  function morph(then){
+    if(reduce){ then&&then(); return; }
+    cv.classList.add('toon');
+    setTimeout(()=>{ cv.classList.remove('toon'); pixelMode=true; size(); cv.classList.add('pixel'); }, 150);
+    setTimeout(()=>{ pixelMode=false; size(); cv.classList.remove('pixel'); then&&then(); }, 330);
+  }
+  function seize(){
+    if(mode==='fly') return;
+    coach.style.opacity = '0';
+    morph(()=>{ mode='fly'; flying.classList.add('on'); statusTxt.textContent='Piloting · 0 km/h';
+      lookHint.style.display='none'; if(navigator.vibrate) navigator.vibrate(12); });
+  }
+  function exitFly(){ mode='attract'; flying.classList.remove('on'); stick.classList.remove('on'); stickState.active=false;
+    stickState.dx=stickState.dy=0; lift=0; coach.style.opacity='1'; statusTxt.textContent='Already in flight'; }
+
+  // ---- verbs ----
+  document.getElementById('vFly').onclick = seize;
+  document.getElementById('exit').onclick = exitFly;
+  document.getElementById('vLook').onclick = ()=>{ if(mode==='fly') return; mode='look'; lookHint.style.display='block';
+    coach.style.opacity='0'; statusTxt.textContent='Look — drag to orbit'; };
+  document.getElementById('vDive').onclick = ()=>{ if(mode==='fly') return; mode='dive'; coach.style.opacity='0';
+    statusTxt.textContent='Dive — tap a building'; lookHint.style.display='none'; };
+  document.getElementById('vInfo').onclick = ()=> alert('Look — drag to orbit the city\nFly — take the craft (on-screen stick + climb/dive)\nDive — tap a building to step inside\n\nThis is a feel-prototype of the v2 HUD. The real engine wires these to existing actions.');
+
+  // ---- pointer: seize-anywhere, look-drag, dive-tap, thumbstick ----
+  let dragStart=null;
+  cv.addEventListener('pointerdown', e=>{
+    if(mode==='fly'){ // spawn stick under thumb
+      stickState.active=true; stickState.cx=e.clientX; stickState.cy=e.clientY;
+      stick.style.left=e.clientX+'px'; stick.style.top=e.clientY+'px'; stick.classList.add('on'); moveKnob(0,0);
+    } else if(mode==='look'){ dragStart={x:e.clientX, c:camX}; }
+    else if(mode==='dive'){ fireReticle(e.clientX,e.clientY); }
+    else { seize(); }   // attract: touch anywhere takes over
+  });
+  addEventListener('pointermove', e=>{
+    if(mode==='fly' && stickState.active){ let dx=e.clientX-stickState.cx, dy=e.clientY-stickState.cy;
+      const m=Math.hypot(dx,dy), max=48; if(m>max){ dx=dx/m*max; dy=dy/m*max; } stickState.dx=dx; stickState.dy=dy; moveKnob(dx,dy); }
+    else if(mode==='look' && dragStart){ camX = dragStart.c + (e.clientX-dragStart.x); }
+  });
+  addEventListener('pointerup', ()=>{ if(stickState.active){ stickState.active=false; stickState.dx=stickState.dy=0; moveKnob(0,0); stick.classList.remove('on'); } dragStart=null; });
+  function moveKnob(dx,dy){ const k=stick.querySelector('.knob'); k.style.left=(64+dx)+'px'; k.style.top=(64+dy)+'px'; }
+  function fireReticle(x,y){ reticle.style.left=x+'px'; reticle.style.top=y+'px'; reticle.classList.remove('on'); void reticle.offsetWidth; reticle.classList.add('on'); }
+
+  // climb / dive hold
+  const hold=(id,v)=>{ const b=document.getElementById(id); const on=()=>lift=v, off=()=>lift=0;
+    b.addEventListener('pointerdown',e=>{e.preventDefault();on();}); b.addEventListener('pointerup',off); b.addEventListener('pointerleave',off); };
+  hold('climb',-1); hold('dive',1);
+})();
+</script>
+</body>
+</html>
