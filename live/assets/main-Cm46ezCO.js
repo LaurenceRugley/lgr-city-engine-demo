@@ -24,7 +24,7 @@ import{_ as e,a as t,c as n,g as r,i,n as a,o,r as s,s as c,t as l,v as u,y as d
         font:600 14px/1.5 ui-monospace,monospace;letter-spacing:.06em;text-align:center;}
       .hoard-death h2{font-size:30px;letter-spacing:.22em;color:#e0524a;margin:0;}
       .hoard-death button{margin-top:8px;min-width:160px;min-height:48px;border:0;border-radius:12px;
-        background:#b89968;color:#1b1d24;font:800 15px/1 ui-monospace,monospace;letter-spacing:.1em;cursor:pointer;}
+        background:#3a7bd5;color:#fff;font:800 15px/1 ui-monospace,monospace;letter-spacing:.1em;cursor:pointer;}
     `,document.head.appendChild(e),k=document.createElement(`div`),k.className=`hoard-stick`,A=document.createElement(`div`),A.className=`knob`,k.appendChild(A),document.body.appendChild(k);let t=!1,n=e=>{let t=k.getBoundingClientRect(),n=e.clientX-(t.left+t.width/2),r=e.clientY-(t.top+t.height/2),i=Math.hypot(n,r)||1;i>44&&(n*=44/i,r*=44/i),A.style.transform=`translate(${n}px,${r}px)`,D.x=n/44,D.y=-r/44};k.addEventListener(`pointerdown`,e=>{t=!0,k.setPointerCapture(e.pointerId),n(e)}),k.addEventListener(`pointermove`,e=>{t&&n(e)});let r=()=>{t=!1,D.x=0,D.y=0,A.style.transform=`translate(0,0)`};k.addEventListener(`pointerup`,r),k.addEventListener(`pointercancel`,r),F=document.createElement(`button`),F.className=`hoard-btn hoard-fire`,F.textContent=`FIRE`,document.body.appendChild(F),nt=document.createElement(`button`),nt.className=`hoard-btn hoard-melee`,nt.textContent=`MELEE`,document.body.appendChild(nt),F.addEventListener(`pointerdown`,e=>{e.preventDefault(),navigator.vibrate?.(12),Ue=!0}),F.addEventListener(`pointerup`,()=>{Ue=!1}),F.addEventListener(`pointercancel`,()=>{Ue=!1}),nt.addEventListener(`pointerdown`,e=>{e.preventDefault(),navigator.vibrate?.(18),Ze()}),Qe=document.createElement(`div`),Qe.className=`hoard-hud`,Qe.innerHTML=`HP<div class="bar"><i style="background:#e0524a"></i></div>STAMINA<div class="bar"><i style="background:#4ad08a"></i></div>HUNGER<div class="bar"><i style="background:#d89a3a"></i></div>THIRST<div class="bar"><i style="background:#3aa6dc"></i></div><div class="stat"></div>`,document.body.appendChild(Qe);let i=Qe.querySelectorAll(`i`);$e=i[0],j=i[1],M=i[2],et=i[3],tt=Qe.querySelector(`.stat`),N=document.createElement(`div`),N.className=`hoard-banner`,document.body.appendChild(N),P=document.createElement(`div`),P.className=`hoard-death`,P.innerHTML=`<h2>YOU DIED</h2><div class="ds"></div><button>RESTART</button>`,document.body.appendChild(P),P.querySelector(`button`).addEventListener(`click`,()=>mt());let a=document.createElement(`style`);a.textContent=`
       .hoard-bagbtn{position:fixed;right:16px;top:14px;z-index:4;display:none;width:48px;height:48px;border:0;border-radius:12px;
         background:rgba(16,18,24,0.72);color:#fff;font-size:22px;cursor:pointer;pointer-events:auto;box-shadow:0 4px 14px rgba(0,0,0,0.4);}
@@ -40,8 +40,8 @@ import{_ as e,a as t,c as n,g as r,i,n as a,o,r as s,s as c,t as l,v as u,y as d
       .hoard-bag .slot.empty{opacity:.35;cursor:default;}
       .hoard-bag .slot .n{position:absolute;right:4px;bottom:3px;font-size:11px;background:#000a;padding:0 3px;border-radius:4px;}
       .hoard-bag .craft{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
-      .hoard-bag .craft button{min-height:44px;border:0;border-radius:10px;padding:0 13px;color:#1b1d24;font:700 11px/1 ui-monospace,monospace;
-        letter-spacing:.04em;cursor:pointer;background:#b89968;}
+      .hoard-bag .craft button{min-height:44px;border:0;border-radius:10px;padding:0 13px;color:#fff;font:700 11px/1 ui-monospace,monospace;
+        letter-spacing:.04em;cursor:pointer;background:#3a7bd5;}
       .hoard-bag .craft button:disabled{opacity:.32;cursor:default;}
       .hoard-bag .close{margin-top:14px;width:100%;min-height:46px;border:0;border-radius:10px;background:#444b57;color:#fff;
         font:700 12px/1 ui-monospace,monospace;letter-spacing:.1em;cursor:pointer;}
