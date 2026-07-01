@@ -26,8 +26,10 @@
       border-top-color: #b89968; border-radius: 50%; animation: lgrspin .9s linear infinite; }
     @keyframes lgrspin { to { transform: rotate(360deg); } }
     @media (prefers-reduced-motion: reduce) { #lgr-loader .spin { animation: none; border-top-color: rgba(184,153,104,0.22); } }
+    /* L106 a11y: high-contrast keyboard focus ring (engine-wide — every project shell gets it, no wiring-drift). */
+    :focus-visible { outline: 2px solid #f3c97a; outline-offset: 2px; }
   </style>
-  <script type="module" crossorigin src="./assets/index-C-4GRwQp.js"></script>
+  <script type="module" crossorigin src="./assets/index-Btda6SUd.js"></script>
   <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-DK3Fl9T5.js">
   <link rel="modulepreload" crossorigin href="./assets/three-D_aL4whJ.js">
 </head>
